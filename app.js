@@ -6,13 +6,14 @@ const $ = id => document.getElementById(id);
 let cat = '';
 const params = new URLSearchParams(location.search);
 
+const letter = e => e.n.normalize('NFD')[0].toUpperCase();
 const FIELDS = [['w', 'What it does'], ['u', 'When to use it'], ['m', 'Common misuse'], ['x', 'Examples']];
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 function render(e) {
   const s = slug(e.n);
   const rel = (e.r || []).map(n => bySlug.has(slug(n)) ? `<a href="#${slug(n)}" data-go="${slug(n)}">${esc(n)}</a>` : esc(n)).join(', ');
-  return `<article id="${s}"><h2><a href="#${s}">${esc(e.n)}</a></h2>
+  return `<article id="${s}" data-l="${letter(e)}"><h2><a href="#${s}">${esc(e.n)}</a></h2>
 <p class="meta">${esc(e.cat)}${e.aka ? ` · aka <em>${esc(e.aka)}</em>` : ''}</p>
 <p class="def">${esc(e.d)}</p><dl>${FIELDS.filter(([k]) => e[k]).map(([k, l]) => `<dt>${l}</dt><dd>${esc(e[k])}</dd>`).join('')}${rel ? `<dt>See also</dt><dd class="rel">${rel}</dd>` : ''}</dl></article>`;
 }
@@ -30,6 +31,7 @@ function show() {
   const hit = all.filter(e => (!cat || e.cat === cat) && (!q || [e.n, e.aka, e.d, e.w, e.u, e.m, e.x].join(' ').toLowerCase().includes(q)));
   $('list').innerHTML = hit.length ? hit.map(render).join('') : '<p class="none">No entry matches. Try fewer words.</p>';
   $('count').textContent = `${hit.length} of ${all.length} entries`;
+  $('az').innerHTML = [...new Set(hit.map(letter))].map(l => `<button>${l}</button>`).join('');
   document.querySelectorAll('#cats button').forEach(b => b.setAttribute('aria-pressed', (b.textContent === 'All' ? '' : b.textContent) === cat));
   sync();
 }
@@ -41,6 +43,16 @@ $('cats').onclick = ev => {
   show();
 };
 $('q').oninput = show;
+$('az').onclick = ev => {
+  const a = ev.target.tagName === 'BUTTON' && document.querySelector(`[data-l="${ev.target.textContent}"]`);
+  if (a) a.scrollIntoView();
+};
+$('top').onclick = () => window.scrollTo(0, 0);
+// / focuses the search box, and Escape clears it.
+document.addEventListener('keydown', ev => {
+  if (ev.key === '/' && document.activeElement !== $('q')) { ev.preventDefault(); $('q').focus(); }
+  else if (ev.key === 'Escape' && document.activeElement === $('q')) { $('q').value = ''; show(); }
+});
 // A related link to an entry that the filter hides clears the filter first.
 $('list').onclick = ev => {
   const id = ev.target.dataset && ev.target.dataset.go;

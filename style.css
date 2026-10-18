@@ -16,6 +16,10 @@ h1{font-size:2.6rem;line-height:1.1;font-weight:400;margin:0 0 .75rem;letter-spa
 #cats{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}
 #cats button{font-size:.8rem;padding:.3rem .65rem;background:none;color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
 #cats button[aria-pressed=true]{color:var(--ground);background:var(--ink);border-color:var(--ink)}
+#az{display:flex;flex-wrap:wrap;justify-content:space-between;margin:.25rem 0 0}
+#az button{font:.8rem 'Volume Tc Sans',system-ui,sans-serif;min-width:1.3rem;padding:.2rem 0;background:none;color:var(--muted);border:0;cursor:pointer}
+#az button:hover{color:var(--accent)}
+#top{position:fixed;right:1rem;bottom:1rem;font-size:.8rem;padding:.4rem .7rem;background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
 #count{font-size:.8rem;color:var(--muted);margin:.5rem 0 0}
 article{padding:2.25rem 0;border-top:1px solid var(--line)}
 article h2{font-size:1.6rem;line-height:1.2;font-weight:400;margin:0 0 .15rem}
