@@ -13,7 +13,10 @@ The list is not complete. Tropes alone number in the tens of thousands. Check na
 The reader can:
 
 * Search the text of all entries.
-* Filter by category, and by the form of the work: novel, short story, screenplay, game or poetry.
+* Filter by category, and by the form of the work: novel, short story, screenplay, game or poetry. The category chips sit in four groups. A sentence under the chips explains the active category.
+* Use the Start here chip to see about 40 basic terms.
+* Read a compact list. Each entry shows its name and definition. The More button opens the rest of the entry. The Expand all button opens every entry.
+* Open a random entry from the current filter with the Random button.
 * Jump to a letter with the letter bar.
 * Star entries, show only the starred entries, and copy them as text. The stars stay in the browser of the reader.
 * Open one entry on its own page, such as `/e/chekhovs-gun/`.
@@ -34,11 +37,13 @@ The address holds the state of the page. These parameters work:
 * `q`: the search text.
 * `cat`: the category name.
 * `for`: one of `novel`, `short`, `screen`, `game` or `poetry`.
+* `start=1`: show only the Start here terms.
 * `starred=1`: show only the starred entries.
+* `open=1`: open every entry.
 
 Example: `?cat=Trope&q=love`.
 
-The key `/` moves the focus to the search box. The key `Escape` clears the search text.
+The key `/` moves the focus to the search box. The key `Escape` clears the search text. The key `r` opens a random entry.
 
 To check the data after an edit, run this command in the repo folder:
 
@@ -46,7 +51,7 @@ To check the data after an edit, run this command in the repo folder:
 node check.mjs
 ```
 
-The script prints the number of entries and the number of problems. It exits with a failure code when it finds a duplicate name, an empty required field, a related name that has no entry, or a bad tag.
+The script prints the number of entries and the number of problems. It exits with a failure code when it finds a duplicate name, an empty required field, a related name that has no entry, a bad tag, a category that is not in exactly one group, a category with no sentence, or a Start here name that has no entry.
 
 To build the site into the folder `_site`, run this command:
 
@@ -65,6 +70,8 @@ Add one object to a file in `data/`. Use this form:
 The fields `n`, `cat`, `d` and `w` are required. Set `cat` in the entry, or use the `map` call at the end of the file, which sets `cat` for every entry that has none. Each name in `r` must be the name of another entry.
 
 Tags for the form filter are in `data/tags.js`. A category has a default list of tags. A name in `byName` replaces the default for that entry.
+
+The same file holds the category groups (`groups`), the sentence for each category (`blurbs`) and the Start here names (`start`). A new category needs a tag list, one group and one sentence.
 
 ## How it works
 
