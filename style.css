@@ -46,3 +46,14 @@ dd{margin:.1rem 0 0}
 .none,footer{color:var(--muted)}
 footer{padding-top:2rem;padding-bottom:4rem;font-size:.85rem;border-top:1px solid var(--line)}
 @media(max-width:480px){h1{font-size:2rem}header{padding-top:2rem}}
+
+@media print{
+  :root{--ground:#fff;--panel:#fff;--ink:#000;--muted:#333;--line:#999;--accent:#000}
+  body{font-size:11pt;line-height:1.45}
+  #q,#cats,#fors,#az,.mine,.star,#top,footer,.lede{display:none!important}
+  header,main{max-width:none;padding:0}
+  header{padding-bottom:1rem}
+  h1{font-size:22pt}
+  article{padding:1rem 0;break-inside:avoid}
+  .rel a{border:0}
+}
