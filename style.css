@@ -26,6 +26,12 @@ h1{font-size:2.6rem;line-height:1.1;font-weight:400;margin:0 0 .75rem;letter-spa
 #top{position:fixed;right:1rem;bottom:1rem;font-size:.8rem;padding:.4rem .7rem;background:var(--panel);color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
 #count{font-size:.8rem;color:var(--muted);margin:.5rem 0 0}
 article{padding:2.25rem 0;border-top:1px solid var(--line)}
+article .head{display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+.star,.mine button{font-size:.75rem;padding:.25rem .6rem;background:none;color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
+.star[aria-pressed=true],.mine button[aria-pressed=true]{color:var(--ground);background:var(--accent);border-color:var(--accent)}
+.star:focus-visible,.mine button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mine{margin:.6rem 0 0}
+[hidden]{display:none!important}
 article h2{font-size:1.6rem;line-height:1.2;font-weight:400;margin:0 0 .15rem}
 article h2 a{color:inherit;text-decoration:none}
 article h2 a:hover{color:var(--accent)}
