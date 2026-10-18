@@ -7,6 +7,8 @@ let cat = '';
 let form = '';
 let onlyStars = false;
 let start = false;
+let openAll = false;
+let hits = [];
 // Stars live in the browser only. A blocked store leaves them in memory for this visit.
 let stars = new Set();
 try { stars = new Set(JSON.parse(localStorage.getItem('codex-stars') || '[]')); } catch (e) {}
@@ -24,7 +26,7 @@ const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&
 function render(e) {
   const s = slug(e.n);
   const rel = (e.r || []).map(n => bySlug.has(slug(n)) ? `<a href="#${slug(n)}" data-go="${slug(n)}">${esc(n)}</a>` : esc(n)).join(', ');
-  return `<article id="${s}" data-l="${letter(e)}"><div class="head"><h2><a href="#${s}">${esc(e.n)}</a></h2><button class="star sans" data-s="${s}" aria-pressed="${stars.has(s)}" aria-label="Star ${esc(e.n)}">${stars.has(s) ? 'Starred' : 'Star'}</button></div>
+  return `<article id="${s}" data-l="${letter(e)}"${openAll ? ' class="open"' : ''}><div class="head"><h2><a href="#${s}">${esc(e.n)}</a></h2><span><button class="more sans" data-o="${s}" aria-expanded="${openAll}">${openAll ? 'Less' : 'More'}</button> <button class="star sans" data-s="${s}" aria-pressed="${stars.has(s)}" aria-label="Star ${esc(e.n)}">${stars.has(s) ? 'Starred' : 'Star'}</button></span></div>
 <p class="meta">${esc(e.cat)}${e.aka ? ` · aka <em>${esc(e.aka)}</em>` : ''}</p>
 <p class="def">${esc(e.d)}</p><dl>${FIELDS.filter(([k]) => e[k]).map(([k, l]) => `<dt>${l}</dt><dd>${esc(e[k])}</dd>`).join('')}${rel ? `<dt>See also</dt><dd class="rel">${rel}</dd>` : ''}</dl></article>`;
 }
@@ -36,6 +38,7 @@ function sync() {
   if (cat) p.set('cat', cat);
   if (form) p.set('for', form);
   if (start) p.set('start', '1');
+  if (openAll) p.set('open', '1');
   if (onlyStars) p.set('starred', '1');
   history.replaceState(null, '', (p.toString() ? '?' + p : location.pathname) + location.hash);
 }
@@ -43,6 +46,10 @@ function sync() {
 function show() {
   const q = $('q').value.trim().toLowerCase();
   const hit = all.filter(e => (!cat || e.cat === cat) && (!start || startSet.has(e.n)) && (!form || tagsOf(e).includes(form)) && (!onlyStars || stars.has(slug(e.n))) && (!q || [e.n, e.aka, e.d, e.w, e.u, e.m, e.x].join(' ').toLowerCase().includes(q)));
+  hits = hit;
+  $('rand').disabled = !hit.length;
+  $('openall').setAttribute('aria-pressed', openAll);
+  $('openall').textContent = openAll ? 'Collapse all' : 'Expand all';
   $('list').innerHTML = hit.length ? hit.map(render).join('') : '<p class="none">No entry matches. Try fewer words.</p>';
   $('count').textContent = `${hit.length} of ${all.length} entries`;
   $('az').innerHTML = [...new Set(hit.map(letter))].map(l => `<button>${l}</button>`).join('');
@@ -71,6 +78,28 @@ $('fors').onclick = ev => {
   form = ev.target.dataset.f || '';
   show();
 };
+// An entry opens when a link, a random pick or the address points at it.
+function openTo(id) {
+  const el = $(id);
+  if (!el) return;
+  el.classList.add('open');
+  el.querySelector('.more').textContent = 'Less';
+  el.querySelector('.more').setAttribute('aria-expanded', true);
+  el.scrollIntoView();
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+}
+$('rand').onclick = () => {
+  if (!hits.length) return;
+  const cur = location.hash.slice(1);
+  const pool = hits.length > 1 ? hits.filter(e => slug(e.n) !== cur) : hits;
+  const id = slug(pool[Math.floor(Math.random() * pool.length)].n);
+  history.replaceState(null, '', location.search + '#' + id);
+  openTo(id);
+};
+$('openall').onclick = () => { openAll = !openAll; show(); };
+window.onhashchange = () => openTo(location.hash.slice(1));
 $('starred').onclick = () => { onlyStars = !onlyStars; show(); };
 $('copy').onclick = async () => {
   const text = all.filter(e => stars.has(slug(e.n))).map(e => `${e.n}: ${e.d}`).join('\n');
@@ -85,11 +114,19 @@ $('az').onclick = ev => {
 $('top').onclick = () => window.scrollTo(0, 0);
 // / focuses the search box, and Escape clears it.
 document.addEventListener('keydown', ev => {
-  if (ev.key === '/' && document.activeElement !== $('q')) { ev.preventDefault(); $('q').focus(); }
+  if (ev.key === 'r' && !ev.ctrlKey && !ev.metaKey && !ev.altKey && !/INPUT|TEXTAREA/.test(document.activeElement.tagName)) $('rand').click();
+  else if (ev.key === '/' && document.activeElement !== $('q')) { ev.preventDefault(); $('q').focus(); }
   else if (ev.key === 'Escape' && document.activeElement === $('q')) { $('q').value = ''; show(); }
 });
 // A related link to an entry that the filter hides clears the filter first.
 $('list').onclick = ev => {
+  const more = ev.target.dataset && ev.target.dataset.o;
+  if (more) {
+    const el = $(more), open = el.classList.toggle('open');
+    ev.target.textContent = open ? 'Less' : 'More';
+    ev.target.setAttribute('aria-expanded', open);
+    return;
+  }
   const star = ev.target.dataset && ev.target.dataset.s;
   if (star) {
     stars.has(star) ? stars.delete(star) : stars.add(star);
@@ -106,5 +143,6 @@ cat = cats.includes(params.get('cat')) ? params.get('cat') : '';
 form = TAGS.labels[params.get('for')] ? params.get('for') : '';
 onlyStars = params.get('starred') === '1';
 start = params.get('start') === '1';
+openAll = params.get('open') === '1';
 show();
-if (location.hash && $(location.hash.slice(1))) $(location.hash.slice(1)).scrollIntoView();
+openTo(location.hash.slice(1));
