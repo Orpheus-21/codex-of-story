@@ -29,6 +29,8 @@ window.TAGS = {
     "Montage": ["screen", "novel", "short"], "Real-time narrative": ["screen", "novel"],
     "Flash fiction": ["short"], "Short story": ["short"], "Unity of effect": ["short"], "Epiphany": ["short"],
     "Vignette": ["short", "novel"], "Cliffhanger": ["novel", "screen", "game"], "Time loop": ["novel", "short", "screen", "game"],
+    "Treatment": ["screen", "novel"], "Beat": ["screen", "novel", "short"], "Screwball comedy": ["screen"], "Slapstick": ["screen", "novel"],
+    "Jump scare": ["screen", "game", "novel"], "Mock-heroic": ["poetry", "novel"], "Wayang": ["screen", "game"],
     "Lampshade hanging": ["novel", "screen", "game"], "Plot coupon": ["novel", "game"], "Isekai": ["novel", "game"]
   }
 };
