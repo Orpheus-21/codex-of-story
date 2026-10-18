@@ -9,6 +9,7 @@ body{margin:0;background:var(--ground);color:var(--ink);font:1.125rem/1.65 'Volu
 .sans,#cats button,#q,dt{font-family:'Volume Tc Sans',system-ui,sans-serif}
 header,main,footer{max-width:42rem;margin:0 auto;padding:0 1rem}
 header{padding-top:4rem;padding-bottom:1rem}
+header a{color:var(--muted)}
 h1{font-size:2.6rem;line-height:1.1;font-weight:400;margin:0 0 .75rem;letter-spacing:-.01em}
 .lede{color:var(--muted);margin:0 0 2rem}
 #q{width:100%;font-size:1rem;padding:.7rem .9rem;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px}
@@ -32,8 +33,8 @@ article .head{display:flex;justify-content:space-between;align-items:baseline;ga
 .star:focus-visible,.mine button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .mine{margin:.6rem 0 0}
 [hidden]{display:none!important}
-article h2{font-size:1.6rem;line-height:1.2;font-weight:400;margin:0 0 .15rem}
-article h2 a{color:inherit;text-decoration:none}
+article h1,article h2{font-size:1.6rem;line-height:1.2;font-weight:400;margin:0 0 .15rem}
+article h1 a,article h2 a{color:inherit;text-decoration:none}
 article h2 a:hover{color:var(--accent)}
 .meta{font:.8rem 'Volume Tc Sans',system-ui,sans-serif;color:var(--muted);margin:0 0 .9rem}
 .meta em{font-family:'Volume Tc',Georgia,serif;font-size:.95rem}
