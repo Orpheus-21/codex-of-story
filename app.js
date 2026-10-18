@@ -4,6 +4,8 @@ const cats = [...new Set(window.CODEX.map(e => e.cat))];
 const bySlug = new Map(all.map(e => [slug(e.n), e]));
 const $ = id => document.getElementById(id);
 let cat = '';
+let form = '';
+const tagsOf = e => TAGS.byName[e.n] || TAGS.byCat[e.cat] || [];
 const params = new URLSearchParams(location.search);
 
 const letter = e => e.n.normalize('NFD')[0].toUpperCase();
@@ -23,16 +25,18 @@ function sync() {
   const p = new URLSearchParams();
   if ($('q').value.trim()) p.set('q', $('q').value.trim());
   if (cat) p.set('cat', cat);
+  if (form) p.set('for', form);
   history.replaceState(null, '', (p.toString() ? '?' + p : location.pathname) + location.hash);
 }
 
 function show() {
   const q = $('q').value.trim().toLowerCase();
-  const hit = all.filter(e => (!cat || e.cat === cat) && (!q || [e.n, e.aka, e.d, e.w, e.u, e.m, e.x].join(' ').toLowerCase().includes(q)));
+  const hit = all.filter(e => (!cat || e.cat === cat) && (!form || tagsOf(e).includes(form)) && (!q || [e.n, e.aka, e.d, e.w, e.u, e.m, e.x].join(' ').toLowerCase().includes(q)));
   $('list').innerHTML = hit.length ? hit.map(render).join('') : '<p class="none">No entry matches. Try fewer words.</p>';
   $('count').textContent = `${hit.length} of ${all.length} entries`;
   $('az').innerHTML = [...new Set(hit.map(letter))].map(l => `<button>${l}</button>`).join('');
   document.querySelectorAll('#cats button').forEach(b => b.setAttribute('aria-pressed', (b.textContent === 'All' ? '' : b.textContent) === cat));
+  document.querySelectorAll('#fors button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.f || '') === form));
   sync();
 }
 
@@ -40,6 +44,12 @@ $('cats').innerHTML = ['All', ...cats].map(c => `<button>${c}</button>`).join(''
 $('cats').onclick = ev => {
   if (ev.target.tagName !== 'BUTTON') return;
   cat = ev.target.textContent === 'All' ? '' : ev.target.textContent;
+  show();
+};
+$('fors').innerHTML = '<span class="sans">For</span><button>All</button>' + Object.entries(TAGS.labels).map(([k, v]) => `<button data-f="${k}">${v}</button>`).join('');
+$('fors').onclick = ev => {
+  if (ev.target.tagName !== 'BUTTON') return;
+  form = ev.target.dataset.f || '';
   show();
 };
 $('q').oninput = show;
@@ -56,9 +66,10 @@ document.addEventListener('keydown', ev => {
 // A related link to an entry that the filter hides clears the filter first.
 $('list').onclick = ev => {
   const id = ev.target.dataset && ev.target.dataset.go;
-  if (id && !$(id)) { $('q').value = ''; cat = ''; show(); }
+  if (id && !$(id)) { $('q').value = ''; cat = ''; form = ''; show(); }
 };
 $('q').value = params.get('q') || '';
 cat = cats.includes(params.get('cat')) ? params.get('cat') : '';
+form = TAGS.labels[params.get('for')] ? params.get('for') : '';
 show();
 if (location.hash && $(location.hash.slice(1))) $(location.hash.slice(1)).scrollIntoView();

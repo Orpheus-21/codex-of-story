@@ -12,10 +12,14 @@ header{padding-top:4rem;padding-bottom:1rem}
 h1{font-size:2.6rem;line-height:1.1;font-weight:400;margin:0 0 .75rem;letter-spacing:-.01em}
 .lede{color:var(--muted);margin:0 0 2rem}
 #q{width:100%;font-size:1rem;padding:.7rem .9rem;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px}
-#q:focus,#cats button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#q:focus,#cats button:focus-visible,#fors button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 #cats{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}
 #cats button{font-size:.8rem;padding:.3rem .65rem;background:none;color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
 #cats button[aria-pressed=true]{color:var(--ground);background:var(--ink);border-color:var(--ink)}
+#fors{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.6rem 0 0}
+#fors span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:.2rem}
+#fors button{font:.8rem 'Volume Tc Sans',system-ui,sans-serif;padding:.3rem .65rem;background:none;color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
+#fors button[aria-pressed=true]{color:var(--ground);background:var(--ink);border-color:var(--ink)}
 #az{display:flex;flex-wrap:wrap;justify-content:space-between;margin:.25rem 0 0}
 #az button{font:.8rem 'Volume Tc Sans',system-ui,sans-serif;min-width:1.3rem;padding:.2rem 0;background:none;color:var(--muted);border:0;cursor:pointer}
 #az button:hover{color:var(--accent)}
