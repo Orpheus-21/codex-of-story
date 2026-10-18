@@ -1,4 +1,4 @@
-const slug = n => n.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const slug = n => n.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/['’]/g, '').replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 const all = (window.CODEX || []).slice().sort((a, b) => a.n.localeCompare(b.n));
 const cats = [...new Set(window.CODEX.map(e => e.cat))];
 const bySlug = new Map(all.map(e => [slug(e.n), e]));
