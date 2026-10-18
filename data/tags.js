@@ -14,9 +14,11 @@ window.TAGS = {
     "Rhetoric": ["novel", "short", "poetry"],
     "Prose & Style": ["novel", "short"],
     "Dialogue": ["novel", "short", "screen"],
-    "Meta & Experimental": ["novel", "short"]
+    "Meta & Experimental": ["novel", "short"],
+    "Forms & Traditions": ["novel", "short"]
   },
   byName: {
+    "Haiku": ["poetry"], "Sonnet": ["poetry"], "Villanelle": ["poetry"], "Sestina": ["poetry"], "Ballad": ["poetry"], "Elegy": ["poetry"], "Ode": ["poetry"], "Flyting": ["poetry"], "Oriki": ["poetry"], "Ghazal": ["poetry"], "Prose poem": ["poetry"],
     "Branching narrative": ["novel", "game"], "Ergodic literature": ["novel", "game"], "Hypertext": ["novel", "game"],
     "Environmental storytelling": ["game"], "Ludonarrative dissonance": ["game"], "Player agency": ["game"],
     "Emergent narrative": ["game"], "Cutscene": ["game"], "The Quest": ["novel", "short", "screen", "game"],
