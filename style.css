@@ -1,0 +1,34 @@
+@font-face{font-family:'Volume Tc';src:url(fonts/VolumeTc-Regular.woff) format('woff');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Volume Tc';src:url(fonts/VolumeTc-Italic.woff) format('woff');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Volume Tc Sans';src:url(fonts/VolumeTcSans-Regular.woff) format('woff');font-weight:400;font-style:normal;font-display:swap}
+:root{--ground:#faf9f5;--panel:#f3f1e8;--ink:#2c251d;--muted:#655d55;--line:#d9d4c6;--accent:#901714}
+@media(prefers-color-scheme:dark){:root{--ground:#14110d;--panel:#1c1811;--ink:#e8e0d0;--muted:#b5ac9b;--line:#3a3329;--accent:#e8483d}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:1rem}
+body{margin:0;background:var(--ground);color:var(--ink);font:1.125rem/1.65 'Volume Tc',Georgia,'Times New Roman',serif;font-synthesis:none;-webkit-font-smoothing:antialiased}
+.sans,#cats button,#q,dt{font-family:'Volume Tc Sans',system-ui,sans-serif}
+header,main,footer{max-width:42rem;margin:0 auto;padding:0 1rem}
+header{padding-top:4rem;padding-bottom:1rem}
+h1{font-size:2.6rem;line-height:1.1;font-weight:400;margin:0 0 .75rem;letter-spacing:-.01em}
+.lede{color:var(--muted);margin:0 0 2rem}
+#q{width:100%;font-size:1rem;padding:.7rem .9rem;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px}
+#q:focus,#cats button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#cats{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}
+#cats button{font-size:.8rem;padding:.3rem .65rem;background:none;color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
+#cats button[aria-pressed=true]{color:var(--ground);background:var(--ink);border-color:var(--ink)}
+#count{font-size:.8rem;color:var(--muted);margin:.5rem 0 0}
+article{padding:2.25rem 0;border-top:1px solid var(--line)}
+article h2{font-size:1.6rem;line-height:1.2;font-weight:400;margin:0 0 .15rem}
+article h2 a{color:inherit;text-decoration:none}
+article h2 a:hover{color:var(--accent)}
+.meta{font:.8rem 'Volume Tc Sans',system-ui,sans-serif;color:var(--muted);margin:0 0 .9rem}
+.meta em{font-family:'Volume Tc',Georgia,serif;font-size:.95rem}
+.def{margin:0 0 1rem}
+dl{margin:0}
+dt{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:.9rem}
+dd{margin:.1rem 0 0}
+.rel a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--line)}
+.rel a:hover{border-color:var(--accent)}
+.none,footer{color:var(--muted)}
+footer{padding-top:2rem;padding-bottom:4rem;font-size:.85rem;border-top:1px solid var(--line)}
+@media(max-width:480px){h1{font-size:2rem}header{padding-top:2rem}}
