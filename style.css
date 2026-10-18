@@ -14,7 +14,11 @@ h1{font-size:2.6rem;line-height:1.1;font-weight:400;margin:0 0 .75rem;letter-spa
 .lede{color:var(--muted);margin:0 0 2rem}
 #q{width:100%;font-size:1rem;padding:.7rem .9rem;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:4px}
 #q:focus,#cats button:focus-visible,#fors button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-#cats{display:flex;flex-wrap:wrap;gap:.4rem;margin:1rem 0}
+#cats{margin:1rem 0 .3rem}
+.grp{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.5rem 0}
+.grp span{font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:9.5rem}
+#cats small{font-size:.7rem;opacity:.7}
+#blurb{font-size:.85rem;color:var(--muted);margin:.2rem 0 0;min-height:1.4em}
 #cats button{font-size:.8rem;padding:.3rem .65rem;background:none;color:var(--muted);border:1px solid var(--line);border-radius:99px;cursor:pointer}
 #cats button[aria-pressed=true]{color:var(--ground);background:var(--ink);border-color:var(--ink)}
 #fors{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.6rem 0 0}
@@ -51,7 +55,7 @@ footer{padding-top:2rem;padding-bottom:4rem;font-size:.85rem;border-top:1px soli
 @media print{
   :root{--ground:#fff;--panel:#fff;--ink:#000;--muted:#333;--line:#999;--accent:#000}
   body{font-size:11pt;line-height:1.45}
-  #q,#cats,#fors,#az,.mine,.star,#top,footer,.lede{display:none!important}
+  #q,#cats,#blurb,#fors,#az,.mine,.star,#top,footer,.lede{display:none!important}
   header,main{max-width:none;padding:0}
   header{padding-bottom:1rem}
   h1{font-size:22pt}

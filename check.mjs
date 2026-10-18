@@ -9,4 +9,8 @@ const T = tags; const names = new Set(E.map(e => e.n)); const cs = new Set(E.map
 for (const c of cs) if (!T.byCat[c]) fail('no tags for category ' + c);
 for (const [n, t] of Object.entries(T.byName)) { if (!names.has(n)) fail('tags name has no entry: ' + n); for (const x of t) if (!T.labels[x]) fail(n + ' bad tag ' + x); }
 for (const [c, t] of Object.entries(T.byCat)) { if (!cs.has(c)) fail('tags for unknown category ' + c); for (const x of t) if (!T.labels[x]) fail(c + ' bad tag ' + x); }
+const grouped = T.groups.flatMap(g => g[1]);
+for (const c of cs) { if (grouped.filter(x => x === c).length !== 1) fail('category not in exactly one group: ' + c); if (!T.blurbs[c]) fail('no blurb for ' + c); }
+for (const c of grouped) if (!cs.has(c)) fail('group has unknown category: ' + c);
+for (const n of T.start || []) if (!names.has(n)) fail('start name has no entry: ' + n);
 console.log(E.length + ' entries,', bad + ' problems'); process.exit(bad ? 1 : 0);

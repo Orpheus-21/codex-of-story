@@ -1,5 +1,30 @@
 // Tags tell an author what a device helps most. A name in byName replaces the default of its category.
 window.TAGS = {
+  // Basic terms for a new reader. The Start here filter shows these.
+  start: ["Plot", "Conflict", "Character", "Protagonist", "Antagonist", "Theme", "Setting", "Point of view", "Narrator", "First-person narration", "Third-person limited", "Unreliable narrator", "Voice", "Three-act structure", "Hero's Journey", "Rising action", "Inciting incident", "Climax", "Character arc", "Stakes", "Exposition", "Foreshadowing", "Plot twist", "Red herring", "Flashback", "In medias res", "Pacing", "Show, don't tell", "Characterization", "Dialogue", "Subtext", "Metaphor", "Simile", "Symbol", "Motif", "Irony", "Genre", "Trope", "Cliché", "World-building"],
+  // The category chips show in these groups. Each category needs one plain sentence.
+  groups: [
+    ["The shape of a story", ["Structure", "Plot & Technique", "Time & Order"]],
+    ["People and voice", ["Character", "Point of View & Voice", "Dialogue"]],
+    ["Worlds and patterns", ["World & Genre", "Trope", "Forms & Traditions"]],
+    ["Language and play", ["Prose & Style", "Figurative Language", "Rhetoric", "Sound & Meter", "Meta & Experimental"]]
+  ],
+  blurbs: {
+    "Structure": "The overall shape of a story: acts, beats and plot patterns.",
+    "Plot & Technique": "Tools that build events: setups, twists, tension and endings.",
+    "Time & Order": "How a story handles time: flashbacks, skips and pace.",
+    "Character": "Roles and types of people in a story, and how they change.",
+    "Point of View & Voice": "Who tells the story, how close they stand, and how they sound.",
+    "Dialogue": "How characters speak, and how to write it on the page.",
+    "World & Genre": "Settings, genres and the rules of a story world.",
+    "Trope": "Common story patterns that readers know on sight.",
+    "Forms & Traditions": "Kinds of work and old storytelling forms, from the novella and the epic to the sonnet.",
+    "Prose & Style": "Choices of word and sentence that make a voice.",
+    "Figurative Language": "Figures that say one thing and mean another: metaphor, irony, allusion.",
+    "Rhetoric": "Figures of persuasion and sentence pattern from Greek and Roman teaching.",
+    "Sound & Meter": "The sound and rhythm of words: rhyme, meter, alliteration.",
+    "Meta & Experimental": "Stories that play with their own form, and theory about how we read."
+  },
   labels: { novel: "Novel", short: "Short story", screen: "Screenplay", game: "Game", poetry: "Poetry" },
   byCat: {
     "Structure": ["novel", "short", "screen"],

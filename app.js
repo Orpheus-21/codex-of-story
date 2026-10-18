@@ -6,11 +6,15 @@ const $ = id => document.getElementById(id);
 let cat = '';
 let form = '';
 let onlyStars = false;
+let start = false;
 // Stars live in the browser only. A blocked store leaves them in memory for this visit.
 let stars = new Set();
 try { stars = new Set(JSON.parse(localStorage.getItem('codex-stars') || '[]')); } catch (e) {}
 const saveStars = () => { try { localStorage.setItem('codex-stars', JSON.stringify([...stars])); } catch (e) {} };
 const tagsOf = e => TAGS.byName[e.n] || TAGS.byCat[e.cat] || [];
+const startSet = new Set(TAGS.start);
+const counts = {};
+all.forEach(e => { counts[e.cat] = (counts[e.cat] || 0) + 1; });
 const params = new URLSearchParams(location.search);
 
 const letter = e => e.n.normalize('NFD')[0].toUpperCase();
@@ -31,17 +35,20 @@ function sync() {
   if ($('q').value.trim()) p.set('q', $('q').value.trim());
   if (cat) p.set('cat', cat);
   if (form) p.set('for', form);
+  if (start) p.set('start', '1');
   if (onlyStars) p.set('starred', '1');
   history.replaceState(null, '', (p.toString() ? '?' + p : location.pathname) + location.hash);
 }
 
 function show() {
   const q = $('q').value.trim().toLowerCase();
-  const hit = all.filter(e => (!cat || e.cat === cat) && (!form || tagsOf(e).includes(form)) && (!onlyStars || stars.has(slug(e.n))) && (!q || [e.n, e.aka, e.d, e.w, e.u, e.m, e.x].join(' ').toLowerCase().includes(q)));
+  const hit = all.filter(e => (!cat || e.cat === cat) && (!start || startSet.has(e.n)) && (!form || tagsOf(e).includes(form)) && (!onlyStars || stars.has(slug(e.n))) && (!q || [e.n, e.aka, e.d, e.w, e.u, e.m, e.x].join(' ').toLowerCase().includes(q)));
   $('list').innerHTML = hit.length ? hit.map(render).join('') : '<p class="none">No entry matches. Try fewer words.</p>';
   $('count').textContent = `${hit.length} of ${all.length} entries`;
   $('az').innerHTML = [...new Set(hit.map(letter))].map(l => `<button>${l}</button>`).join('');
-  document.querySelectorAll('#cats button').forEach(b => b.setAttribute('aria-pressed', (b.textContent === 'All' ? '' : b.textContent) === cat));
+  document.querySelectorAll('#cats button').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === cat && !start));
+  $('start').setAttribute('aria-pressed', start);
+  $('blurb').textContent = start ? 'About 40 basic terms. Read these first.' : cat ? TAGS.blurbs[cat] : '';
   document.querySelectorAll('#fors button').forEach(b => b.setAttribute('aria-pressed', (b.dataset.f || '') === form));
   $('starred').setAttribute('aria-pressed', onlyStars);
   $('starred').textContent = `Starred (${stars.size})`;
@@ -49,12 +56,15 @@ function show() {
   sync();
 }
 
-$('cats').innerHTML = ['All', ...cats].map(c => `<button>${c}</button>`).join('');
+$('cats').innerHTML = '<div class="grp"><button id="start" title="About 40 basic terms to read first">Start here</button><button data-c="">All</button></div>' + TAGS.groups.map(([g, cs]) => `<div class="grp"><span class="sans">${g}</span>${cs.map(c => `<button data-c="${esc(c)}" title="${esc(TAGS.blurbs[c])}">${esc(c)} <small>${counts[c]}</small></button>`).join('')}</div>`).join('');
 $('cats').onclick = ev => {
-  if (ev.target.tagName !== 'BUTTON') return;
-  cat = ev.target.textContent === 'All' ? '' : ev.target.textContent;
+  const b = ev.target.closest('button');
+  if (!b || b.id === 'start') return;
+  cat = b.dataset.c;
+  start = false;
   show();
 };
+$('start').onclick = () => { start = !start; if (start) cat = ''; show(); };
 $('fors').innerHTML = '<span class="sans">For</span><button>All</button>' + Object.entries(TAGS.labels).map(([k, v]) => `<button data-f="${k}">${v}</button>`).join('');
 $('fors').onclick = ev => {
   if (ev.target.tagName !== 'BUTTON') return;
@@ -89,11 +99,12 @@ $('list').onclick = ev => {
     return;
   }
   const id = ev.target.dataset && ev.target.dataset.go;
-  if (id && !$(id)) { $('q').value = ''; cat = ''; form = ''; onlyStars = false; show(); }
+  if (id && !$(id)) { $('q').value = ''; cat = ''; form = ''; onlyStars = false; start = false; show(); }
 };
 $('q').value = params.get('q') || '';
 cat = cats.includes(params.get('cat')) ? params.get('cat') : '';
 form = TAGS.labels[params.get('for')] ? params.get('for') : '';
 onlyStars = params.get('starred') === '1';
+start = params.get('start') === '1';
 show();
 if (location.hash && $(location.hash.slice(1))) $(location.hash.slice(1)).scrollIntoView();
